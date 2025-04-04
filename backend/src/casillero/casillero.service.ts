@@ -180,6 +180,89 @@ export class CasilleroService {
     return { message, result }
   }
 
+  public async registerCasilleroByLetraNumero(
+    letra: string,
+    numero: number,
+    updateCasilleroDto: UpdateCasilleroDto,
+    comprobante?: Express.Multer.File
+  ): Promise<{ message: string; result: Casillero }> {
+    // Buscar el bloque por letra
+    const bloque = await this.casilleroRepository.manager.findOne(
+      CasilleroBloque,
+      {
+        where: { letra }
+      }
+    )
+    if (!bloque) {
+      throw new NotFoundException(`No se encontró el bloque con letra ${letra}`)
+    }
+    // Buscar el casillero por número y bloque
+    const casillero = await this.casilleroRepository.findOne({
+      where: {
+        numero,
+        bloque: { id: bloque.id }
+      },
+      relations: ['bloque']
+    })
+    if (!casillero) {
+      throw new NotFoundException(
+        `No se encontró el casillero ${letra}-${numero}`
+      )
+    }
+    let message = 'Actualización exitosa. Datos del casillero actualizados.'
+    if (!casillero.ocupado) {
+      message = 'Registro exitoso. Casillero asignado correctamente.'
+    }
+    const actualizedLocker = this.casilleroRepository.merge(
+      casillero,
+      updateCasilleroDto
+    )
+    // Procesar el comprobante si existe
+    if (comprobante) {
+      try {
+        // Validar el formato del archivo
+        const formatosPermitidos = [
+          'image/jpeg',
+          'image/png',
+          'image/webp',
+          'image/jpg'
+        ]
+        if (!formatosPermitidos.includes(comprobante.mimetype)) {
+          throw new BadRequestException('Formato de imagen no permitido.')
+        }
+
+        // Procesar y comprimir la imagen
+        const comprobanteBuffer = await sharp(comprobante.buffer)
+          .resize(800, 800, { fit: 'inside' })
+          .toFormat('webp')
+          .webp({ quality: 50 })
+          .toBuffer()
+
+        // Asignar el buffer procesado
+        actualizedLocker.comprobante = Buffer.from(comprobanteBuffer)
+        console.log(
+          `Tamaño del comprobante comprimido: ${comprobanteBuffer.length} bytes`
+        )
+      } catch (error) {
+        throw new BadRequestException(
+          `Error al procesar el comprobante: ${error.message}`
+        )
+      }
+    }
+    actualizedLocker.ocupado = true
+    const result = await this.casilleroRepository.save(actualizedLocker)
+    if (!result) {
+      throw new BadRequestException('No se pudo registrar el casillero')
+    }
+    // Para evitar enviar el buffer completo en la respuesta
+    if (result.comprobante) {
+      const resultToReturn: any = { ...result }
+      resultToReturn.comprobante = 'comprobante-cargado'
+      return { message, result: resultToReturn }
+    }
+    return { message, result }
+  }
+
   /**
    * Limpia los datos de un casillero específico.
    *
