@@ -1,0 +1,9 @@
+{
+  "name": "Gestion_AEIE",
+  "version": "1.0.0",
+  "description": "aplicacion para gestionar servicios de la asociacion de estudiantes de la asociacion de electronica de la epn - ecuador",
+  "main": "index.js",
+  "repository": "https://github.com/stalin21r/Gestion_AEIE.git",
+  "author": "Stalin Garcia Ruano",
+  "license": "MIT"
+}
