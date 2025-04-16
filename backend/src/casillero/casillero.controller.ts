@@ -63,19 +63,6 @@ export class CasilleroController {
   @ApiResponse({ status: 201, description: 'Bloque creado correctamente' })
   @ApiResponse({ status: 400, description: 'Error en la solicitud' })
   @ApiResponse({ status: 500, description: 'Error interno del servidor' })
-  /**
-   * Crea un bloque de casilleros con su respectiva letra.
-   *
-   * Recibe un parámetro `mode` que indica si se crearan los casilleros en el
-   * bloque. Si `mode` es `true`, se crea el bloque con numeración horizontal.
-   * Si `mode` es `false`, se crea el bloque con numeración vertical.
-   *
-   * @param mode Un booleano que indica como se crean los bloques de casilleros
-   *
-   * @returns Un objeto con una propiedad `message` que contiene un mensaje de
-   * confirmacion y una propiedad `data` que contiene el id del bloque recien
-   * creado.
-   */
   async createBloque(@Body('mode') mode: boolean, @Res() res: Response) {
     try {
       const result = await this.casilleroService.createBloque(mode)
@@ -114,19 +101,6 @@ export class CasilleroController {
   })
   @ApiResponse({ status: 404, description: 'No se encontraron casilleros' })
   @ApiResponse({ status: 500, description: 'Error interno del servidor' })
-  /**
-   * Obtiene todos los casilleros, con opción de filtrar por letra de bloque.
-   *
-   * Consulta el servicio para obtener todos los casilleros, pudiendo filtrar
-   * por la letra del bloque a través del parámetro `letra`.
-   *
-   * @param res - El objeto de respuesta de Express.
-   * @param letra - (Opcional) La letra del bloque de casilleros para filtrar.
-   * @returns Un objeto JSON con un mensaje de éxito y la lista de casilleros.
-   * @throws {NotFoundException} - Si no se encuentran casilleros.
-   * @throws {InternalServerErrorException} - Si ocurre un error inesperado
-   * al obtener los casilleros.
-   */
   async findAllCasilleros(
     @Res() res: Response,
     @Query('letra') letra?: string
@@ -172,24 +146,6 @@ export class CasilleroController {
   @ApiResponse({ status: 404, description: 'Casillero no encontrado' })
   @ApiResponse({ status: 400, description: 'Error en la solicitud' })
   @ApiResponse({ status: 500, description: 'Error interno del servidor' })
-  /**
-   * Registra o actualiza un casillero con el identificador proporcionado.
-   *
-   * Consulta el servicio para asignar o actualizar los datos del casillero
-   * especificado por el `id` utilizando la información del `updateCasilleroDto`.
-   *
-   * @param res - El objeto de respuesta de Express.
-   * @param id - El identificador del casillero a registrar o actualizar.
-   * @param updateCasilleroDto - Los datos a actualizar en el casillero.
-   *
-   * @returns Un objeto JSON con un mensaje de éxito y los datos del
-   * casillero registrado o actualizado.
-   *
-   * @throws {NotFoundException} - Si no se encuentra el casillero.
-   * @throws {BadRequestException} - Si la solicitud es inválida o no se
-   * puede registrar el casillero.
-   * @throws {InternalServerErrorException} - Si ocurre un error inesperado.
-   */
   async registerCasillero(
     @Res() res: Response,
     @Param('id') id: number,
@@ -251,26 +207,6 @@ export class CasilleroController {
   @ApiResponse({ status: 404, description: 'Bloque o casillero no encontrado' })
   @ApiResponse({ status: 400, description: 'Error en la solicitud' })
   @ApiResponse({ status: 500, description: 'Error interno del servidor' })
-  /**
-   * Registra o actualiza un casillero con la letra de bloque y número proporcionados.
-   *
-   * Consulta el servicio para asignar o actualizar los datos del casillero
-   * especificado por la `letra` del bloque y el `numero` utilizando la información del `updateCasilleroDto`.
-   *
-   * @param res - El objeto de respuesta de Express.
-   * @param letra - La letra del bloque del casillero.
-   * @param numero - El número del casillero dentro del bloque.
-   * @param updateCasilleroDto - Los datos a actualizar en el casillero.
-   * @param comprobante - Archivo opcional que contiene el comprobante.
-   *
-   * @returns Un objeto JSON con un mensaje de éxito y los datos del
-   * casillero registrado o actualizado.
-   *
-   * @throws {NotFoundException} - Si no se encuentra el bloque o casillero.
-   * @throws {BadRequestException} - Si la solicitud es inválida o no se
-   * puede registrar el casillero.
-   * @throws {InternalServerErrorException} - Si ocurre un error inesperado.
-   */
   async registerCasilleroByLetraNumero(
     @Res() res: Response,
     @Param('letra') letra: string,
@@ -332,22 +268,6 @@ export class CasilleroController {
   @ApiResponse({ status: 404, description: 'Casillero no encontrado' })
   @ApiResponse({ status: 400, description: 'Error en la solicitud' })
   @ApiResponse({ status: 500, description: 'Error interno del servidor' })
-  /**
-   * Limpia un casillero.
-   *
-   * Consulta el servicio para limpiar un casillero con el identificador
-   * proporcionado.
-   *
-   * @param res - El objeto de respuesta de Express.
-   * @param id - El identificador del casillero a limpiar.
-   * @param registrado_por - La persona que realiza la acción de limpiar el
-   * casillero.
-   * @returns Un objeto JSON con un mensaje de éxito y los datos del
-   * casillero limpiado.
-   * @throws {NotFoundException} - Si no se encuentra el casillero.
-   * @throws {BadRequestException} - Si la solicitud es inválida.
-   * @throws {InternalServerErrorException} - Si ocurre un error inesperado.
-   */
   async clearCasillero(
     @Res() res: Response,
     @Param('id') id: number,
@@ -405,21 +325,6 @@ export class CasilleroController {
   @ApiResponse({ status: 404, description: 'Bloque no encontrado' })
   @ApiResponse({ status: 400, description: 'Error en la solicitud' })
   @ApiResponse({ status: 500, description: 'Error interno del servidor' })
-  /**
-   * Limpia un bloque de casilleros.
-   *
-   * Consulta el servicio para limpiar el bloque de casilleros con la letra
-   * proporcionada.
-   *
-   * @param res - El objeto de respuesta de Express.
-   * @param letra - La letra del bloque de casilleros a limpiar.
-   * @param registrado_por - La persona que realiz la acci n de limpiar el
-   * bloque.
-   * @returns Un objeto JSON con un mensaje de  xito y los datos del bloque
-   * limpiado.
-   * @throws {NotFoundException} - Si no se encuentra el bloque de casilleros.
-   * @throws {InternalServerErrorException} - Si ocurre un error inesperado.
-   */
   async clearBloque(
     @Res() res: Response,
     @Body('letra') letra: string,
@@ -459,15 +364,6 @@ export class CasilleroController {
   })
   @ApiResponse({ status: 200, description: 'Letras encontradas correctamente' })
   @ApiResponse({ status: 500, description: 'Error interno del servidor' })
-  /**
-   * Obtiene todas las letras de los bloques de casilleros.
-   *
-   * Consulta el servicio para obtener todas las letras de los bloques de casilleros.
-   *
-   * @param res - El objeto de respuesta de Express.
-   * @returns Un objeto JSON con un mensaje de éxito y las letras de los bloques.
-   * @throws {InternalServerErrorException} - Si ocurre un error inesperado al obtener las letras.
-   */
   async findAllLetras(@Res() res: Response) {
     try {
       const result = await this.casilleroService.findAllLetras()
@@ -497,19 +393,6 @@ export class CasilleroController {
   @ApiResponse({ status: 200, description: 'Bloque eliminado correctamente' })
   @ApiResponse({ status: 404, description: 'Bloque no encontrado' })
   @ApiResponse({ status: 500, description: 'Error interno del servidor' })
-  /**
-   * Elimina un bloque de casilleros.
-   *
-   * Consulta el servicio para eliminar el bloque de casilleros con la letra
-   * proporcionada.
-   *
-   * @param res - El objeto de respuesta de Express.
-   * @param letra - La letra del bloque de casilleros a eliminar.
-   * @returns Un objeto JSON con un mensaje de éxito y los datos del bloque
-   * eliminado.
-   * @throws {NotFoundException} - Si no se encuentra el bloque de casilleros.
-   * @throws {InternalServerErrorException} - Si ocurre un error inesperado.
-   */
   async deleteBloque(@Res() res: Response, @Param('letra') letra: string) {
     try {
       const result = await this.casilleroService.deleteBloque(letra)
@@ -543,17 +426,6 @@ export class CasilleroController {
     description: 'No se encontraron datos de ocupación'
   })
   @ApiResponse({ status: 500, description: 'Error interno del servidor' })
-  /**
-   * Obtiene la ocupación de los casilleros.
-   *
-   * Consulta el servicio para obtener el estado de ocupación de los casilleros,
-   * devolviendo el número de casilleros ocupados y libres por bloque.
-   *
-   * @param res - El objeto de respuesta de Express.
-   * @returns Un objeto JSON con un mensaje de éxito y los datos de ocupación.
-   * @throws {NotFoundException} - Si no se encuentran datos de ocupación.
-   * @throws {InternalServerErrorException} - Si ocurre un error inesperado.
-   */
   async getOccupancy(@Res() res: Response) {
     try {
       const result = await this.casilleroService.getOccupancy()
