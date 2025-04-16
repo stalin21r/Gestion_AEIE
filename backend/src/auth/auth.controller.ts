@@ -18,7 +18,7 @@ import { Response } from 'express'
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
+  @Post('login')
   /**
    * Inicia sesión con el usuario y contraseña proporcionados.
    *
@@ -35,7 +35,7 @@ export class AuthController {
       const result = await this.authService.signIn(authDto)
       return res.status(HttpStatus.OK).json({
         message: 'Inicio de sesión exitoso',
-        data: result
+        token: result
       })
     } catch (error) {
       if (error instanceof NotFoundException) {
