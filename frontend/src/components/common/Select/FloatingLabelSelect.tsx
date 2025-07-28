@@ -1,24 +1,22 @@
 import React, { useState } from 'react'
 
-interface InputProps {
+interface SelectProps {
   label: string
-  type: string
   name: string
-  placeholder?: string
   value?: string
   labelColor?: 'blue' | 'red' | 'green' | 'purple' | 'pink' | 'indigo'
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
+  children: React.ReactNode
 }
 
-export default function FloatingLabelInput({
+export default function FloatingLabelSelect({
   label,
-  type,
   name,
-  placeholder = '',
   value = '',
   labelColor = 'blue',
-  onChange
-}: InputProps) {
+  onChange,
+  children
+}: SelectProps) {
   const [isFocused, setIsFocused] = useState(false)
   const handleFocus = () => setIsFocused(true)
   const handleBlur = () => setIsFocused(false)
@@ -87,17 +85,34 @@ export default function FloatingLabelInput({
         {label}
       </label>
 
-      <input
+      <select
         id={name}
-        type={type}
         name={name}
-        placeholder={placeholder}
         value={value}
         onChange={onChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        className={`w-full px-3 pt-4 pb-4 z-10 bg-white border border-gray-400 rounded-xl focus:outline-none focus:ring-2 ${ring} text-black font-semibold focus:border-transparent`}
-      />
+        className={`w-full px-3 pt-4 pb-4 z-10 bg-white border border-gray-400 rounded-xl focus:outline-none focus:ring-2 ${ring} text-black font-semibold focus:border-transparent appearance-none cursor-pointer`}
+      >
+        {children}
+      </select>
+
+      {/* Icono de flecha personalizado */}
+      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+        <svg
+          className="w-5 h-5 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </div>
     </div>
   )
 }

@@ -3,9 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import authService from '@/services/auth.service'
 import { LoboLogin, Logo1, CloudLogin, ElectronicaText } from '@/assets/images'
-import FloatingLabelInput from '@/components/common/Input'
+import { FloatingLabelInput, LoadingOverlay } from '@/components'
 import { toast } from 'react-toastify'
-import LoadingOverlay from '@/components/common/LoadingOverlay'
 import { ROUTES } from '@/utils/constants'
 
 export default function Login() {
@@ -73,7 +72,7 @@ export default function Login() {
           backgroundPositionX: '10%'
         }}
       >
-        <div className="w-[80%] md:w-[60%] flex flex-col items-center justify-center items-center md:mr-20 space-y-4">
+        <div className="w-[80%] md:w-[60%] flex flex-col justify-center items-center md:mr-20 space-y-4">
           <img src={Logo1} className="w-[150px] mb-4 h-auto" />
           <h2 className="text-black font-bold text-2xl">INICIAR SESIÓN</h2>
 
@@ -100,7 +99,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full sm:w-3/4 text-white bg-[#001366] hover:bg-[#001d91] hover:scale-105 font-medium rounded-lg text-base font-bold px-5 py-2.5 text-center disabled:opacity-50 cursor-pointer transition duration-300 ease-in-out"
+              className="w-full sm:w-3/4 text-white bg-[#001366] hover:bg-[#001d91] hover:scale-105 rounded-lg text-base font-bold px-5 py-2.5 text-center disabled:opacity-50 cursor-pointer transition duration-300 ease-in-out"
             >
               {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
             </button>

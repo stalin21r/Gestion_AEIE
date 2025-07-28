@@ -28,6 +28,7 @@ const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
       const data = await api.post<AuthResponse>('/auth/login', credentials)
+      api.setToken(data.token)
       return data
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {

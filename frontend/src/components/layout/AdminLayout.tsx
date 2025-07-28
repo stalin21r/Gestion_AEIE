@@ -1,14 +1,13 @@
 import { useEffect, useState, useRef } from 'react'
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
-import { Lobo } from '@/assets/images'
+import { Lobo, Logo2 } from '@/assets/images'
 import { ROUTES } from '@/utils/constants'
 
 const AdminLayout = () => {
   const { userInfo, logout } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const [sidebarOpen, setSidebarOpen] = useState(true)
   const [menuOpen, setMenuOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -27,7 +26,9 @@ const AdminLayout = () => {
 
   const getNavItemClasses = (route: string) =>
     `text-center text-lg text-black w-full py-2 transition duration-300 hover:bg-[#fdd835] ${
-      isActiveRoute(route) ? 'bg-[#fde269]' : 'bg-white'
+      isActiveRoute(route) && !location.pathname.includes(route + '/')
+        ? 'bg-[#fde269]'
+        : 'bg-white'
     }`
 
   // Cierra el menú perfil si haces clic fuera
@@ -56,7 +57,7 @@ const AdminLayout = () => {
         alt="Lobo-AEIE"
       />
 
-      <Link to={ROUTES.ADMIN_HOME}>
+      <Link to={ROUTES.HOME}>
         <h2 className="flex-3 text-[1.5rem] text-[#042141] font-bold">AEIE</h2>
       </Link>
 
@@ -179,7 +180,8 @@ const AdminLayout = () => {
 
       {/* Main content */}
       <div className="w-full lg:w-[80%] xl:w-[85%] flex flex-col overflow-hidden">
-        <main className="flex-1 overflow-auto p-4 bg-[#0b0d36]">
+        <main className="flex-1 overflow-auto p-4 bg-[#0b0d36] flex flex-col items-center w-full">
+          <img src={Logo2} alt="Logo de La AEIE" className="w-32 mb-4" />
           <Outlet />
         </main>
       </div>
