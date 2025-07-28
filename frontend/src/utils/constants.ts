@@ -15,9 +15,8 @@ export const ROUTES = {
   LOGIN: '/login',
   REGISTER: '/register',
   FORGOT_PASSWORD: '/forgot-password',
-  PUBLIC_HOME: '/home',
-  PUBLIC_CASILLEROS: '/casilleros',
-  PUBLIC_TIENDA: '/tienda',
+  CASILLEROS: '/casilleros',
+  TIENDA: '/tienda',
 
   // Rutas privadas
   ADMIN_HOME: '/admin',

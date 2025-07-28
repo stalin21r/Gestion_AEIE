@@ -7,9 +7,7 @@ import PublicLayout from '@/components/layout/PublicLayout'
 import AdminLayout from '@/components/layout/AdminLayout'
 
 // Páginas públicas (Landing)
-// import LandingHome from '@/pages/Landing/Home'
-// import LandingTienda from '@/pages/Landing/Tienda'
-// import LandingCasilleros from '@/pages/Landing/Casilleros'
+import { Casilleros, Home, Tienda } from '@/pages/Landing'
 
 // Páginas de autenticación
 import Login from '@/pages/Auth'
@@ -17,15 +15,15 @@ import Login from '@/pages/Auth'
 // import ForgotPassword from '@/pages/Auth/ForgotPassword'
 
 // Páginas de administración
-// import AdminHome from '@/pages/Administration/Home'
-// import AdminTienda from '@/pages/Administration/Tienda'
-// import AdminCasilleros from '@/pages/Administration/Casilleros'
-// import AdminTurnos from '@/pages/Administration/Turnos'
-// import AdminConfiguracion from '@/pages/Administration/Configuracion'
-// import UserProfile from '@/pages/Administration/UserProfile'
+import {
+  AdminHome,
+  AdminTienda,
+  AdminCasilleros,
+  AdminTurnos,
+  UserProfile
+} from '@/pages/Administration/'
 
-// Páginas de error
-// import NotFound from '@/pages/NotFound'
+import NotFound from '@/pages/NotFound/NotFound'
 
 // Definición de rutas
 const routes: RouteObject[] = [
@@ -38,11 +36,9 @@ const routes: RouteObject[] = [
     path: ROUTES.HOME,
     element: <PublicLayout />,
     children: [
-      { index: true, element: <h1>hola mundo</h1> }
-      // Rutas públicas (comentadas hasta que se implementen las páginas)
-      // { index: true, element: <LandingHome /> },
-      // { path: ROUTES.PUBLIC_TIENDA, element: <LandingTienda /> },
-      // { path: ROUTES.PUBLIC_CASILLEROS, element: <LandingCasilleros /> },
+      { index: true, element: <Home /> },
+      { path: ROUTES.TIENDA, element: <Tienda /> },
+      { path: ROUTES.CASILLEROS, element: <Casilleros /> }
       // Rutas de autenticación
       //{ path: ROUTES.LOGIN, element: <Login /> }
       // TODO: Se deja expresado el registro y la recuperación de contraseña para implementación futura
@@ -62,25 +58,21 @@ const routes: RouteObject[] = [
       </PrivateRoute>
     ),
     children: [
-      {
-        index: true,
-        element: <h1>hola mundo este es la pagina de administracion</h1>
-      }
       // Páginas de administración (comentadas hasta que se implementen las páginas)
-      // { index: true, element: <AdminHome /> },
-      // { path: 'tienda', element: <AdminTienda /> },
-      // { path: 'casilleros', element: <AdminCasilleros /> },
-      // { path: 'turnos', element: <AdminTurnos /> },
+      { index: true, element: <AdminHome /> },
+      { path: ROUTES.ADMIN_TIENDA, element: <AdminTienda /> },
+      { path: ROUTES.ADMIN_CASILLEROS, element: <AdminCasilleros /> },
+      { path: ROUTES.ADMIN_TURNOS, element: <AdminTurnos /> },
+      { path: ROUTES.USER_PROFILE, element: <UserProfile /> }
       // { path: 'configuracion', element: <PrivateRoute adminOnly={true}><AdminConfiguracion /></PrivateRoute> },
-      // { path: 'perfil', element: <UserProfile /> },
     ]
-  }
+  },
 
   // Ruta para 404 (comentada hasta tener la página de NotFound)
-  // {
-  //   path: '*',
-  //   element: <NotFound />,
-  // },
+  {
+    path: '*',
+    element: <NotFound />
+  }
 ]
 
 // Crear el router

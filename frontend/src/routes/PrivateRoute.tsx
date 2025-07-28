@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import { ROUTES } from '@/utils/constants'
-import LoadingOverlay from '@/components/common/LoadingOverlay'
+import { LoadingOverlay } from '@/components'
 
 interface PrivateRouteProps {
   children: ReactNode

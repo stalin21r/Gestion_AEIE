@@ -1,5 +1,5 @@
-import { Asistencia } from 'src/asistencia/entities/asistencia.entity'
-import { Turno } from 'src/turno/entities/turno.entity'
+import { Asistencia } from '../../asistencia/entities/asistencia.entity'
+import { Turno } from '../../turno/entities/turno.entity'
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
 @Entity('usuarios', { schema: 'private' })
 export class Usuario {
