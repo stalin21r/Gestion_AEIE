@@ -3,4 +3,5 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer-when-downgrade
   Permissions-Policy: geolocation=(), microphone=(), camera=()
-  Content-Security-Policy: default-src 'self'; img-src * data: blob:; media-src *; script-src 'self' https://connect.facebook.net; style-src 'self' 'unsafe-inline'; connect-src 'self' https://gestion-aeie.onrender.com;
+  Content-Security-Policy: default-src * 'unsafe-inline' 'unsafe-eval' data: blob: https:;
+
