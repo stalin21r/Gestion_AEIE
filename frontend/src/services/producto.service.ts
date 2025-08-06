@@ -4,7 +4,9 @@ import type {
   ApiResponse,
   Producto,
   CreateProducto,
-  UpdateProducto
+  UpdateProducto,
+  FindAllProductsResponse,
+  FindProductsOptions
 } from '@/types'
 
 interface ProductoError {
@@ -46,9 +48,23 @@ const ProductoService = {
     }
   },
 
-  async findAllProductos(): Promise<ApiResponse<Producto[]>> {
+  async findAllProductos(
+    options: FindProductsOptions = {}
+  ): Promise<ApiResponse<FindAllProductsResponse>> {
     try {
-      const response = await api.get<ApiResponse<Producto[]>>('/producto')
+      const params = new URLSearchParams()
+      if (options.search) params.append('search', options.search)
+      if (options.categoria)
+        params.append('categoria', options.categoria.toString())
+      if (options.page) params.append('page', options.page.toString())
+      if (options.limit) params.append('limit', options.limit.toString())
+
+      const response = await api.get<ApiResponse<FindAllProductsResponse>>(
+        '/producto',
+        {
+          params
+        }
+      )
       return response
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

@@ -6,6 +6,8 @@ interface InputProps {
   name: string
   placeholder?: string
   value?: string
+  backgroundColor?: string
+  textColor?: string
   labelColor?: 'blue' | 'red' | 'green' | 'purple' | 'pink' | 'indigo'
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
@@ -16,6 +18,8 @@ export default function FloatingLabelInput({
   name,
   placeholder = '',
   value = '',
+  textColor = 'white',
+  backgroundColor = '[#0b0d36]',
   labelColor = 'blue',
   onChange
 }: InputProps) {
@@ -68,15 +72,14 @@ export default function FloatingLabelInput({
     ? `text-lg -top-4 left-4 bg-inherit z-2 px-1 ${isFocused ? `${text} font-bold ` : 'text-gray-500 font-normal'}`
     : 'text-gray-500 top-1/2 -translate-y-1/2'
   const fixBorder = shouldFloat
-    ? `text-lg -top-[0.07rem] left-4 bg-white px-2 z-1 text-inherit h-1`
+    ? `text-lg -top-[0.6rem] left-4 bg-${backgroundColor} px-2 z-1 text-inherit h-4`
     : 'hidden'
 
   return (
     <div className="relative w-full">
       <label
         htmlFor={name}
-        className={`absolute left-3 transition-all duration-200 pointer-events-none ${labelClasses}`}
-        style={{ WebkitTextStroke: '0.2px white' }}
+        className={`absolute left-3 transition-all duration-200 pointer-events-none focus:[webkit-text-stroke:0.8px_white] ${labelClasses}`}
       >
         {label}
       </label>
@@ -84,7 +87,7 @@ export default function FloatingLabelInput({
         htmlFor={name}
         className={`absolute left-3 transition-all duration-200 pointer-events-none ${fixBorder}`}
       >
-        {label}
+        <span className="text-transparent">{label}</span>
       </label>
 
       <input
@@ -96,7 +99,7 @@ export default function FloatingLabelInput({
         onChange={onChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        className={`w-full px-3 pt-4 pb-4 z-10 bg-white border border-gray-400 rounded-xl focus:outline-none focus:ring-2 ${ring} text-black font-semibold focus:border-transparent`}
+        className={`w-full px-3 pt-4 pb-4 z-0 bg-inherit border border-gray-400 rounded-xl focus:outline-none focus:ring-2 ${ring} text-${textColor} font-semibold focus:border-transparent`}
       />
     </div>
   )

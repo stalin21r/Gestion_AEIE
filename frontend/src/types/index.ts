@@ -1,5 +1,11 @@
 import type { ApiResponse } from './ApiResponse'
-import type { Producto, CreateProducto, UpdateProducto } from './Producto'
+import type {
+  Producto,
+  CreateProducto,
+  UpdateProducto,
+  FindAllProductsResponse,
+  FindProductsOptions
+} from './Producto'
 import type {
   ProductoCategoria,
   CreateProductoCategoria,
@@ -13,5 +19,7 @@ export {
   UpdateProducto,
   ProductoCategoria,
   CreateProductoCategoria,
-  UpdateProductoCategoria
+  UpdateProductoCategoria,
+  FindAllProductsResponse,
+  FindProductsOptions
 }

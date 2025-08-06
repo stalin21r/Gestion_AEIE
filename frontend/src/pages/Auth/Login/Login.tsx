@@ -84,6 +84,8 @@ export default function Login() {
               label="Usuario"
               type="text"
               name="user"
+              backgroundColor="white"
+              textColor="black"
               value={user}
               onChange={e => setUser(e.target.value)}
             />
@@ -92,6 +94,8 @@ export default function Login() {
               label="Contraseña"
               type="password"
               name="password"
+              backgroundColor="white"
+              textColor="black"
               value={password}
               onChange={e => setPassword(e.target.value)}
             />

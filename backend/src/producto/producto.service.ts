@@ -8,8 +8,10 @@ import { UpdateProductoDto } from './dto/update-producto.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Producto } from './entities/producto.entity'
 import { ImgurService } from '../imgur/imgur.service'
-import { Repository } from 'typeorm'
-import { Express } from 'express'
+import { FindOptionsWhere, ILike, Repository } from 'typeorm'
+import { FindProductsDto } from './dto/find-products.dto'
+
+type WhereOptions = FindOptionsWhere<Producto>
 
 @Injectable()
 export class ProductoService {
@@ -65,16 +67,33 @@ export class ProductoService {
     }
   }
 
-  public async findAllProductos() {
-    const filter: any = {
+  public async findAllProductos(
+    query: FindProductsDto
+  ): Promise<{ products: Producto[]; total: number }> {
+    const { search, categoria, page = 1, limit = 10 } = query
+
+    const skip = (page - 1) * limit
+    const take = limit
+
+    const where: WhereOptions = {}
+
+    if (search) {
+      where.nombre = ILike(`%${search}%`)
+    }
+
+    if (categoria) {
+      where.categoria = { id: Number(categoria) }
+    }
+
+    const [products, total] = await this.productoRepository.findAndCount({
+      where,
       relations: ['categoria'],
-      order: { id: 'ASC' }
-    }
-    const result = await this.productoRepository.find(filter)
-    if (!result || result.length === 0) {
-      throw new NotFoundException('No se encontraron productos')
-    }
-    return result
+      order: { id: 'ASC' },
+      take,
+      skip
+    })
+
+    return { products, total }
   }
 
   public async findProductoById(id: number) {
