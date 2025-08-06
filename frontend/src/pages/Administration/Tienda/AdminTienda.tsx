@@ -61,6 +61,7 @@ export default function AdminTienda() {
   }
 
   useEffect(() => {
+    setLoading(true)
     loadData()
   }, [debouncedBusqueda, selectedCategoria, currentPage])
 
@@ -330,6 +331,8 @@ export default function AdminTienda() {
             type="text"
             name="nombre"
             labelColor="blue"
+            backgroundColor="white"
+            textColor="black"
             value={selectedProducto?.nombre || ''}
             onChange={e =>
               setSelectedProducto({
@@ -343,6 +346,8 @@ export default function AdminTienda() {
             type="number"
             name="precio"
             labelColor="blue"
+            backgroundColor="white"
+            textColor="black"
             value={
               selectedProducto?.precio !== undefined
                 ? String(selectedProducto.precio)
@@ -358,6 +363,8 @@ export default function AdminTienda() {
           <FloatingLabelSelect
             label="Categoría*"
             name="productoCat"
+            backgroundColor="white"
+            textColor="black"
             value={selectedProducto?.categoria?.id.toString() || ''}
             onChange={e => {
               setSelectedProducto({
