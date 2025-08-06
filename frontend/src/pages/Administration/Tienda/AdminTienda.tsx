@@ -3,9 +3,10 @@ import { FaPlusCircle } from 'react-icons/fa'
 import {
   FloatingLabelInput,
   FloatingLabelSelect,
-  LoadingOverlay,
   ModalForm,
-  ProductoCard
+  ProductoCard,
+  ProductoCardSkeleton,
+  Pagination
 } from '@/components'
 import { toast } from 'react-toastify'
 import { ProductoService, ProductoCategoriaService } from '@/services'
@@ -23,27 +24,37 @@ export default function AdminTienda() {
   const [busqueda, setBusqueda] = useState('')
   const [categorias, setCategorias] = useState<ProductoCategoria[]>([])
   const [productos, setProductos] = useState<Producto[]>([])
-  const [filterProductos, setFilterProductos] = useState<Producto[]>([])
   const [selectedCategoria, setSelectedCategoria] = useState('')
   const [selectedProducto, setSelectedProducto] =
     useState<Partial<Producto | null>>(null)
   const [modalFormOpen, setModalFormOpen] = useState(false)
   const [openImageFile, setOpenImageFile] = useState<File | null>(null)
   const [isEditMode, setIsEditMode] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [pageSize] = useState(8)
+  const [debouncedBusqueda, setDebouncedBusqueda] = useState(busqueda)
 
   const loadData = async () => {
     try {
-      setLoading(true)
-      const [categoriasRes, productosRes] = await Promise.all([
-        ProductoCategoriaService.findAllCategorias(),
-        ProductoService.findAllProductos()
-      ])
-      console.log(productosRes)
+      // Obtener categorías primero
+      const categoriasRes = await ProductoCategoriaService.findAllCategorias()
       setCategorias(categoriasRes.data)
-      setProductos(productosRes.data)
     } catch (error) {
-      toast.error('Error al obtener productos')
-      console.log(error)
+      toast.error(error instanceof Error ? error.message : 'Error desconocido')
+    }
+    try {
+      const productosRes = await ProductoService.findAllProductos({
+        search: debouncedBusqueda,
+        categoria: selectedCategoria ? parseInt(selectedCategoria) : undefined,
+        page: currentPage,
+        limit: pageSize
+      })
+      setProductos(productosRes.data.products)
+      setTotalPages(Math.ceil(productosRes.data.total / pageSize))
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Error desconocido')
+      setProductos([])
     } finally {
       setLoading(false)
     }
@@ -51,21 +62,22 @@ export default function AdminTienda() {
 
   useEffect(() => {
     loadData()
-  }, [])
+  }, [debouncedBusqueda, selectedCategoria, currentPage])
 
   useEffect(() => {
-    const filtered = productos.filter(producto => {
-      const matchesCategoria =
-        selectedCategoria === '' ||
-        producto.categoria.id.toString() === selectedCategoria
-      const matchesBusqueda =
-        busqueda === '' ||
-        producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
-      return matchesCategoria && matchesBusqueda
-    })
+    setCurrentPage(1)
+  }, [busqueda, selectedCategoria])
 
-    setFilterProductos(filtered)
-  }, [selectedCategoria, busqueda, productos])
+  useEffect(() => {
+    setLoading(true)
+    const handler = setTimeout(() => {
+      setDebouncedBusqueda(busqueda)
+    }, 500) // 500ms de espera
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [busqueda])
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -171,6 +183,9 @@ export default function AdminTienda() {
       setSelectedProducto(null)
       setOpenImageFile(null)
     } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : 'Error al actualizar producto'
+      )
     } finally {
       setLoading(false)
     }
@@ -230,7 +245,6 @@ export default function AdminTienda() {
 
   return (
     <div className="w-full flex flex-col items-center justify-center space-y-6">
-      {loading && <LoadingOverlay />}
       <section className="w-7/9 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 lg:gap-10 xl:gap-30">
         <div className="w-1/2">
           <FloatingLabelSelect
@@ -276,19 +290,30 @@ export default function AdminTienda() {
         </div>
       </section>
       <section className="max-w-7xl mx-auto flex justify-center items-center">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filterProductos.map(producto => (
-            <ProductoCard
-              key={producto.id}
-              producto={producto}
-              onHover
-              pointer
-              onClick={() => handleSelectProducto(producto)}
-            />
-          ))}
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
+          {loading
+            ? Array.from({ length: pageSize }).map((_, idx) => (
+                <ProductoCardSkeleton key={idx} />
+              ))
+            : productos.map(producto => (
+                <ProductoCard
+                  key={producto.id}
+                  producto={producto}
+                  onHover
+                  pointer
+                  onClick={() => handleSelectProducto(producto)}
+                />
+              ))}
         </div>
       </section>
-      <section></section>
+      <section className="mt-4">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          disabled={loading}
+        />
+      </section>
       <ModalForm
         title={`${selectedProducto ? 'Editar' : 'Agregar'} Producto`}
         open={modalFormOpen}

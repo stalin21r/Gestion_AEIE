@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async'
 import { FaRegCheckCircle } from 'react-icons/fa'
 import { FacebookPagePlugin } from '@/components'
 import { useEffect, useState } from 'react'
@@ -58,6 +59,53 @@ export default function Home() {
   }, [])
   return (
     <>
+      <Helmet>
+        <title>
+          AEIE - Asociación de Estudiantes de Ingeniería Electrónica | EPN
+        </title>
+        <meta
+          name="description"
+          content="La Asociación de Estudiantes de Ingeniería Electrónica (AEIE) representa a estudiantes de Electrónica, Telecomunicaciones, TI y Automatización en la Escuela Politécnica Nacional. Descubre sus actividades, servicios y espacios."
+        />
+        <meta
+          name="keywords"
+          content="AEIE, estudiantes, Electrónica, Telecomunicaciones, Automatización, Tecnologías de la Información, EPN, asociación estudiantil, Quito"
+        />
+        <meta name="author" content="AEIE - Escuela Politécnica Nacional" />
+
+        <meta
+          property="og:title"
+          content="AEIE - Estudiantes de Ingeniería Electrónica | EPN"
+        />
+        <meta
+          property="og:description"
+          content="Conoce a la AEIE: actividades, servicios, acompañamiento académico y vida estudiantil para carreras de Electrónica en la EPN."
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:url"
+          content="https://asoelectronicaepn.netlify.app/"
+        />
+        <meta
+          property="og:image"
+          content="https://asoelectronicaepn.netlify.app/og-image.png"
+        />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="AEIE - Estudiantes de Ingeniería Electrónica | EPN"
+        />
+        <meta
+          name="twitter:description"
+          content="Asociación de Estudiantes de Electrónica de la EPN. Espacios, servicios, acompañamiento académico y más."
+        />
+        <meta
+          name="twitter:image"
+          content="https://asoelectronicaepn.netlify.app/og-image.png"
+        />
+      </Helmet>
+
       {/* about */}
       <section
         ref={aboutRef}
