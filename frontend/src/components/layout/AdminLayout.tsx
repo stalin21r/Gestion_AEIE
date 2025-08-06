@@ -49,6 +49,13 @@ const AdminLayout = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  useEffect(() => {
+    // Cada vez que cambie la ruta, cerramos el menú móvil
+    if (mobileMenuOpen) {
+      setMobileMenuOpen(false)
+    }
+  }, [location.pathname])
+
   const SidebarContent = () => (
     <>
       <img

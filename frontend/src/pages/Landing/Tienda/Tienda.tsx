@@ -47,6 +47,7 @@ export default function Tienda() {
   }
 
   useEffect(() => {
+    setLoading(true)
     loadData()
   }, [debouncedBusqueda, selectedCategoria, currentPage])
 
@@ -66,7 +67,7 @@ export default function Tienda() {
   }, [busqueda])
 
   return (
-    <div className="bg-[#0b0d36] px-20 py-10">
+    <div className="bg-[#0b0d36] px-2 md:px-20 py-10">
       {/* META SEO */}
       <Helmet>
         <title>
@@ -110,8 +111,8 @@ export default function Tienda() {
           <img src={Logo2} alt="" />
           <h2 className="text-4xl font-bold text-[#b3c7e6]">Tienda</h2>
         </section>
-        <section className="w-2/5 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 lg:gap-10 xl:gap-30">
-          <div className="w-1/2">
+        <section className="w-4/5 md:w-2/5 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 lg:gap-10 xl:gap-30">
+          <div className="w-3/4 md:w-1/2">
             <FloatingLabelSelect
               label="Categoría"
               name="categoria"
@@ -128,7 +129,7 @@ export default function Tienda() {
             </FloatingLabelSelect>
           </div>
 
-          <div className="w-1/2 flex justify-center items-center gap-2">
+          <div className="w-3/4 md:w-1/2 flex justify-center items-center gap-2">
             <FloatingLabelInput
               label="Búsqueda"
               type="text"
