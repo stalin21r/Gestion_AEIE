@@ -14,7 +14,8 @@ import {
   HttpStatus,
   BadRequestException,
   NotFoundException,
-  UseGuards
+  UseGuards,
+  Query
 } from '@nestjs/common'
 import { ProductoService } from './producto.service'
 import { CreateProductoDto } from './dto/create-producto.dto'
@@ -23,6 +24,7 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { Response } from 'express'
 import { ImageValidationPipe } from './pipes/image-validation.pipe'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
+import { FindProductsDto } from './dto/find-products.dto'
 
 @Controller('producto')
 @UsePipes(new ValidationPipe({ transform: true }))
@@ -60,9 +62,12 @@ export class ProductoController {
   }
 
   @Get()
-  async findAllProductos(@Res() res: Response) {
+  async findAllProductos(
+    @Query() query: FindProductsDto,
+    @Res() res: Response
+  ) {
     try {
-      const result = await this.productoService.findAllProductos()
+      const result = await this.productoService.findAllProductos(query)
       return res.status(HttpStatus.OK).json({
         message: 'Productos obtenidos correctamente',
         data: result
