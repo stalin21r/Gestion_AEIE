@@ -12,7 +12,10 @@ export default defineConfig({
     Sitemap({
       hostname: 'https://asoelectronicaepn.netlify.app',
       exclude: ['/login', '/admin', '/admin/*'],
-      dynamicRoutes: ['/', '/casilleros', '/tienda']
+      dynamicRoutes: ['/casilleros', '/tienda'],
+      lastmodDateOnly: true, // evita los milisegundos
+      changefreq: 'daily',
+      priority: 0.8
     })
   ],
   resolve: {
