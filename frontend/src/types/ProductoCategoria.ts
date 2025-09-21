@@ -1,5 +1,5 @@
 export interface ProductoCategoria {
-  id: number
+  id: string
   categoria: string
 }
 
@@ -9,5 +9,5 @@ export interface CreateProductoCategoria {
 
 export interface UpdateProductoCategoria
   extends Partial<CreateProductoCategoria> {
-  id: number
+  id: string
 }

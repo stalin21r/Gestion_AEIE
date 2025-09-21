@@ -46,7 +46,7 @@ export default function AdminTienda() {
     try {
       const productosRes = await ProductoService.findAllProductos({
         search: debouncedBusqueda,
-        categoria: selectedCategoria ? parseInt(selectedCategoria) : undefined,
+        categoria: selectedCategoria ? selectedCategoria : undefined,
         page: currentPage,
         limit: pageSize
       })
@@ -113,7 +113,7 @@ export default function AdminTienda() {
       const newProducto: CreateProducto = {
         nombre: selectedProducto?.nombre || '',
         precio: selectedProducto?.precio || 0,
-        categoria: selectedProducto?.categoria?.id || 0
+        categoria: selectedProducto?.categoria?.id || ''
       }
       if (openImageFile) {
         newProducto.imagen = openImageFile
@@ -168,14 +168,14 @@ export default function AdminTienda() {
       const updateProducto: UpdateProducto = {
         nombre: selectedProducto?.nombre || '',
         precio: selectedProducto?.precio || 0,
-        categoria: selectedProducto?.categoria?.id || 0
+        categoria: selectedProducto?.categoria?.id || ''
       }
       if (openImageFile) {
         updateProducto.imagen = openImageFile
       }
       setLoading(true)
       const result = await ProductoService.updateProducto(
-        selectedProducto?.id || 0,
+        selectedProducto?.id || '',
         updateProducto
       )
       toast.success(result.message)
@@ -208,7 +208,7 @@ export default function AdminTienda() {
       }
       setLoading(true)
       const result = await ProductoService.deleteProducto(
-        selectedProducto?.id || 0
+        selectedProducto?.id || ''
       )
       toast.success(result.message)
       loadData()

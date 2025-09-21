@@ -19,6 +19,9 @@ const AdminLayout = () => {
   }
 
   const isActiveRoute = (route: string) => {
+    if (route === ROUTES.ADMIN_HOME) {
+      return location.pathname === route
+    }
     return (
       location.pathname === route || location.pathname.startsWith(`${route}/`)
     )
@@ -26,9 +29,7 @@ const AdminLayout = () => {
 
   const getNavItemClasses = (route: string) =>
     `text-center text-lg text-black w-full py-2 transition duration-300 hover:bg-[#fdd835] ${
-      isActiveRoute(route) && !location.pathname.includes(route + '/')
-        ? 'bg-[#fde269]'
-        : 'bg-white'
+      isActiveRoute(route) ? 'bg-[#fde269]' : 'bg-white'
     }`
 
   // Cierra el menú perfil si haces clic fuera

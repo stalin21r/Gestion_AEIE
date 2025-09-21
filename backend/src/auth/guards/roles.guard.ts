@@ -20,18 +20,16 @@ export class RolesGuard implements CanActivate {
    * indica que el usuario no tiene acceso.
    */
   canActivate(context: ExecutionContext): boolean | Promise<boolean> {
-    /*
-    const rolesPermitidos = this.reflector.get<boolean[]>(
+    const rolesPermitidos = this.reflector.get<string[]>(
       'roles',
       context.getHandler()
     )
     if (!rolesPermitidos || rolesPermitidos.length === 0) {
       return true
-    }*/
+    }
     const request = context.switchToHttp().getRequest<CustomRequest>()
     const user = request.user
-    if (!user) {
-      // || !rolesPermitidos.includes(user.rol)) {
+    if (!user || !user.rol || !rolesPermitidos.includes(user.rol.nombre)) {
       throw new ForbiddenException('Acceso denegado.')
     }
     return true

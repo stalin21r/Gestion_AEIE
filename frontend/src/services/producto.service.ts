@@ -78,24 +78,8 @@ const ProductoService = {
     }
   },
 
-  async findProductoById(id: number): Promise<ApiResponse<Producto>> {
-    try {
-      const response = await api.get<ApiResponse<Producto>>(`/producto/${id}`)
-      return response
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        const errorData: ProductoError = error.response.data
-        throw new Error(errorData.message || 'Error al obtener producto')
-      }
-      if (error instanceof Error) {
-        throw new Error(error.message)
-      }
-      throw new Error('Error desconocido al obtener producto')
-    }
-  },
-
   async updateProducto(
-    id: number,
+    id: string,
     producto: UpdateProducto
   ): Promise<ApiResponse<Producto>> {
     try {
@@ -132,7 +116,7 @@ const ProductoService = {
     }
   },
 
-  async deleteProducto(id: number): Promise<ApiResponse<Producto>> {
+  async deleteProducto(id: string): Promise<ApiResponse<Producto>> {
     try {
       const response = await api.delete<ApiResponse<Producto>>(
         `/producto/${id}`

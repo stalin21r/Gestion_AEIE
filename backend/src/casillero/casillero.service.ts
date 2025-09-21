@@ -284,7 +284,7 @@ export class CasilleroService {
         propietario: null,
         correo: null,
         telefono: null,
-        registrado_por: registrado_por,
+        registradoPor: registrado_por,
         comprobante: null // Añadido para limpiar el comprobante
       })
       .where('id = :id', { id })
@@ -323,7 +323,7 @@ export class CasilleroService {
         propietario: null,
         correo: null,
         telefono: null,
-        registrado_por: registrado_por,
+        registradoPor: registrado_por,
         comprobante: null // Añadido para limpiar el comprobante
       })
       .where('bloque IN (SELECT id FROM private.bloque WHERE letra = :letra)', {
@@ -386,7 +386,6 @@ export class CasilleroService {
     return result
   }
 
-  /*************  ✨ Codeium Command ⭐  *************/
   /**
    * Obtiene la ocupación de los casilleros, agrupados por bloque.
    *
@@ -397,7 +396,6 @@ export class CasilleroService {
    * @returns Un objeto JSON con un mensaje de éxito y los datos de ocupación.
    * @throws {NotFoundException} - Si no se encuentran datos de ocupación.
    */
-  /******  2c723f42-c758-4b1d-9049-6533ae4c3d23  *******/
   public async getOccupancy() {
     const result = await this.casilleroRepository.query(
       `SELECT 

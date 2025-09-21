@@ -36,10 +36,20 @@ export class AuthService {
    */
 
   public async signIn(authDto: AuthDto) {
-    const result = await this.usuarioRepository.query(
-      'SELECT * FROM private.login_usuario($1)',
-      [authDto.user]
-    )
+    const result = await this.usuarioRepository.find({
+      select: {
+        id: true,
+        nombre: true,
+        apellido: true,
+        contrasena: true,
+        rol: {
+          id: true,
+          nombre: true
+        }
+      },
+      relations: ['rol'],
+      where: [{ usuario: authDto.user }, { correo: authDto.user }]
+    })
     if (!result || result.length === 0) {
       throw new NotFoundException('Usuario no encontrado')
     }
@@ -52,7 +62,7 @@ export class AuthService {
       user.id,
       user.nombre,
       user.apellido,
-      user.rol
+      user.rol.nombre
     )
     return signedToken
   }
@@ -68,17 +78,25 @@ export class AuthService {
    *          su nombre, apellido y rol.
    */
   private async signToken(
-    userId: number,
-    name: string,
-    lastname: string,
-    rol: boolean
+    userId: string,
+    nombre: string,
+    apellido: string,
+    rolNombre: string
   ): Promise<string> {
-    const payload = { userId, name, lastname, rol }
+    const payload = {
+      userId,
+      name: nombre,
+      lastname: apellido,
+      rol: rolNombre
+    }
+
     const secret = this.config.get<string>('JWT_SECRET')
+
     const token = await this.jwt.signAsync(payload, {
       expiresIn: '10h',
       secret: secret
     })
+
     return token
   }
 }

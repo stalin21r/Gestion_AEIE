@@ -19,6 +19,7 @@ import {
   AdminHome,
   AdminTienda,
   AdminCasilleros,
+  AdminTableCasilleros,
   AdminTurnos,
   UserProfile
 } from '@/pages/Administration/'
@@ -62,6 +63,14 @@ const routes: RouteObject[] = [
       { index: true, element: <AdminHome /> },
       { path: ROUTES.ADMIN_TIENDA, element: <AdminTienda /> },
       { path: ROUTES.ADMIN_CASILLEROS, element: <AdminCasilleros /> },
+      {
+        path: ROUTES.ADMIN_TABLE_CASILLEROS,
+        element: (
+          <PrivateRoute superAdminOnly={true}>
+            <AdminTableCasilleros />
+          </PrivateRoute>
+        )
+      },
       { path: ROUTES.ADMIN_TURNOS, element: <AdminTurnos /> },
       { path: ROUTES.USER_PROFILE, element: <UserProfile /> }
       // { path: 'configuracion', element: <PrivateRoute adminOnly={true}><AdminConfiguracion /></PrivateRoute> },

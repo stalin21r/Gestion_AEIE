@@ -1,11 +1,11 @@
-import { Request } from 'express'
-
 export interface CustomRequest extends Request {
   user: {
-    userId: number
-    name: string
-    lastname: string
-    rol: boolean
-    // Agrega aquí otras propiedades que tenga tu usuario
+    userId: string // UUID string
+    nombre: string
+    apellido: string
+    rol: {
+      nombre: string
+    }
+    // Puedes añadir otros campos que quieras propagar desde el payload JWT
   }
 }

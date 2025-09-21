@@ -17,11 +17,13 @@ export const ROUTES = {
   FORGOT_PASSWORD: '/forgot-password',
   CASILLEROS: '/casilleros',
   TIENDA: '/tienda',
+  NOT_FOUND: '/404',
 
   // Rutas privadas
   ADMIN_HOME: '/admin',
   ADMIN_TIENDA: '/admin/tienda',
   ADMIN_CASILLEROS: '/admin/casilleros',
+  ADMIN_TABLE_CASILLEROS: '/admin/casilleros/detail',
   ADMIN_TURNOS: '/admin/turnos',
   ADMIN_CONFIGURACION: '/admin/configuracion',
   USER_PROFILE: '/admin/perfil'

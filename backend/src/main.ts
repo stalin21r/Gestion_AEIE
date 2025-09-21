@@ -17,11 +17,29 @@ async function bootstrap() {
     .setTitle('API Documentation')
     .setDescription('Documentación de la API REST')
     .setVersion('1.0')
-    .addBearerAuth()
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'Authorization',
+        description: 'Introduce el token JWT aquí (sin "Bearer ")',
+        in: 'header'
+      },
+      'JWT-auth' // Nombre que usaremos en @ApiBearerAuth()
+    )
     .build()
 
   const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('api/v1/docs', app, document)
+
+  // 🔑 Forzar que TODOS los endpoints requieran JWT
+  document.security = [{ 'JWT-auth': [] }]
+
+  SwaggerModule.setup('api/v1/docs', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true // mantiene el token tras recargar la página
+    }
+  })
 
   const dataSource = app.get(DataSource)
   if (!dataSource.isInitialized) {

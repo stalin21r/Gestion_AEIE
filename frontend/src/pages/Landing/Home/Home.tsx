@@ -245,18 +245,18 @@ export default function Home() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-none md:rounded-l-lg"></div>
                   <div className="absolute bottom-6 left-6 right-6">
-                    <h3 className="text-2xl font-bold text-white mb-3">
+                    <h2 className="text-2xl font-bold text-white mb-3">
                       Telecomunicaciones
-                    </h3>
+                    </h2>
                   </div>
                 </div>
 
                 {/* Back */}
                 <div className="absolute inset-0 w-full h-full rounded-none md:rounded-l-lg bg-white [transform:rotateY(180deg)] [backface-visibility:hidden]">
                   <div className="p-8 h-full flex flex-col justify-center">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-4">
                       Telecomunicaciones
-                    </h3>
+                    </h2>
                     <p className="text-gray-600 mb-6 leading-relaxed">
                       Forma profesionales capaces de diseñar, operar y asegurar
                       redes y servicios de telecomunicaciones, aplicando
@@ -299,18 +299,18 @@ export default function Home() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                   <div className="absolute bottom-6 left-6 right-6">
-                    <h3 className="text-2xl font-bold text-white mb-3">
+                    <h2 className="text-2xl font-bold text-white mb-3">
                       Tecnologías de la Información
-                    </h3>
+                    </h2>
                   </div>
                 </div>
 
                 {/* Back */}
                 <div className="absolute inset-0 w-full h-full bg-white [transform:rotateY(180deg)] [backface-visibility:hidden]">
                   <div className="p-8 h-full flex flex-col justify-center">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-4">
                       Tecnologías de la Información
-                    </h3>
+                    </h2>
                     <p className="text-gray-600 mb-6 leading-relaxed">
                       Forma profesionales éticos y competentes en desarrollo
                       web, redes, bases de datos, seguridad, interacción
@@ -353,18 +353,18 @@ export default function Home() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent rounded-none md:rounded-r-lg"></div>
                   <div className="absolute bottom-6 left-6 right-6">
-                    <h3 className="text-2xl font-bold text-white mb-3">
+                    <h2 className="text-2xl font-bold text-white mb-3">
                       Electronica y Automatización
-                    </h3>
+                    </h2>
                   </div>
                 </div>
 
                 {/* Back */}
                 <div className="absolute inset-0 w-full h-full rounded-none md:rounded-r-lg bg-white [transform:rotateY(180deg)] [backface-visibility:hidden]">
                   <div className="p-8 h-full flex flex-col justify-center">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-4">
                       Electronica y Automatización
-                    </h3>
+                    </h2>
                     <p className="text-gray-600 mb-6 leading-relaxed">
                       Forma profesionales capaces de diseñar, automatizar y
                       controlar sistemas industriales y comerciales, aplicando

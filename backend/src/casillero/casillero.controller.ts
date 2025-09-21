@@ -32,12 +32,10 @@ import {
   ApiParam,
   ApiQuery,
   ApiBody,
-  ApiBearerAuth,
   ApiConsumes
 } from '@nestjs/swagger'
 
 @ApiTags('casillero')
-@ApiBearerAuth()
 @UsePipes(new ValidationPipe({ transform: true }))
 @Controller('casillero')
 export class CasilleroController {

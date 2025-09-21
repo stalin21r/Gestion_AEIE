@@ -51,7 +51,7 @@ const ProductoCategoriaService = {
     }
   },
 
-  async findCategoriaById(id: number): Promise<ApiResponse<ProductoCategoria>> {
+  async findCategoriaById(id: string): Promise<ApiResponse<ProductoCategoria>> {
     try {
       const response = await api.get<ApiResponse<ProductoCategoria>>(
         `/producto-categoria/${id}`
@@ -70,7 +70,7 @@ const ProductoCategoriaService = {
   },
 
   async updateCategoria(
-    id: number,
+    id: string,
     categoria: UpdateProductoCategoria
   ): Promise<ApiResponse<ProductoCategoria>> {
     try {
@@ -91,7 +91,7 @@ const ProductoCategoriaService = {
     }
   },
 
-  async deleteCategoria(id: number): Promise<ApiResponse<ProductoCategoria>> {
+  async deleteCategoria(id: string): Promise<ApiResponse<ProductoCategoria>> {
     try {
       const response = await api.delete<ApiResponse<ProductoCategoria>>(
         `/producto-categoria/${id}`

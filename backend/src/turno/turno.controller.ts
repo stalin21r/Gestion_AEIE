@@ -24,7 +24,15 @@ import { CustomRequest } from '../auth/interfaces/CustomRequest.interface'
 import { Response } from 'express'
 import { RolesGuard } from '../auth/guards/roles.guard'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiQuery,
+  ApiParam
+} from '@nestjs/swagger'
 
+@ApiTags('Turnos') // Grupo en Swagger
 @Controller('turno')
 @UsePipes(new ValidationPipe({ whitelist: true }))
 export class TurnoController {
@@ -33,6 +41,12 @@ export class TurnoController {
   //@UseGuards(JwtAuthGuard)
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiOperation({ summary: 'Crear un turno' })
+  @ApiResponse({ status: 201, description: 'Turno creada correctamente' })
+  @ApiResponse({
+    status: 400,
+    description: 'Datos inválidos o usuario no existe'
+  })
   /**
    * Creates a new turno.
    *
@@ -81,6 +95,13 @@ export class TurnoController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Obtener todos los turnos' })
+  @ApiQuery({
+    name: 'usuario',
+    required: false,
+    description: 'Filtrar por ID de usuario'
+  })
+
   /**
    * Finds all turnos.
    *
@@ -119,6 +140,8 @@ export class TurnoController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Obtener un turno por ID' })
+  @ApiParam({ name: 'id', type: Number, description: 'ID del turno' })
   /**
    * Finds a turno by its ID.
    *
@@ -154,6 +177,8 @@ export class TurnoController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiOperation({ summary: 'Actualizar un turno por ID' })
+  @ApiParam({ name: 'id', type: Number })
   /**
    * Updates a turno by its ID.
    *
@@ -196,6 +221,8 @@ export class TurnoController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiOperation({ summary: 'Eliminar un turno por ID' })
+  @ApiParam({ name: 'id', type: Number })
   /**
    * Deletes a turno by its ID.
    *

@@ -33,14 +33,19 @@ export class ProductoCategoriaService {
   }
 
   public async findAllCategorias() {
-    const result = await this.productoCategoriaRepository.find()
+    const result = await this.productoCategoriaRepository.find({
+      select: {
+        id: true,
+        categoria: true
+      }
+    })
     if (!result || result.length === 0) {
       throw new NotFoundException('No se encontraron categorías')
     }
     return result
   }
 
-  public async findCategoriaById(id: number) {
+  public async findCategoriaById(id: string) {
     const result = await this.productoCategoriaRepository.findOneBy({ id })
     if (!result) {
       throw new NotFoundException('No se encontró la categoría')
@@ -49,7 +54,7 @@ export class ProductoCategoriaService {
   }
 
   public async updateCategoria(
-    id: number,
+    id: string,
     updateProductoCategoriaDto: UpdateProductoCategoriaDto
   ) {
     const result = await this.productoCategoriaRepository.update(
@@ -62,7 +67,7 @@ export class ProductoCategoriaService {
     return result
   }
 
-  public async deleteCategoria(id: number) {
+  public async deleteCategoria(id: string) {
     const result = await this.productoCategoriaRepository.delete(id)
     if (!result.affected) {
       throw new NotFoundException('No se encontró la categoría')

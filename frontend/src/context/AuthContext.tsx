@@ -2,10 +2,10 @@ import { createContext, useState, useEffect, ReactNode } from 'react'
 
 // definir tipos para la información de usuario
 interface UserInfo {
-  userId: number
+  userId: string
   name: string
   lastname: string
-  rol: boolean
+  rol: string
 }
 
 // definir la interfaz para el contexto de autenticación

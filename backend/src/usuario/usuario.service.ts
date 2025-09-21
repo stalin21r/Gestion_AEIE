@@ -33,7 +33,7 @@ export class UsuarioService {
    */
   public async createUsuario(createUsuarioDto: CreateUsuarioDto) {
     const user = createUsuarioDto
-    user.contrasena = await hash(user.contrasena, 10)
+    user.contrasena = await hash(user.contrasena, 15)
     const result = await this.usuarioRepository.save(user)
     if (!result) {
       throw new BadRequestException('No se pudo crear el usuario')
@@ -53,8 +53,12 @@ export class UsuarioService {
   async findUsuarios() {
     const result = await this.usuarioRepository.find({
       select: {
-        contrasena: false
-      }
+        contrasena: false,
+        rol: {
+          id: false
+        }
+      },
+      relations: ['rol']
     })
     if (!result || result.length === 0) {
       throw new NotFoundException('No se encontraron usuarios')
@@ -72,8 +76,12 @@ export class UsuarioService {
    * @returns The user.
    * @throws {NotFoundException} - If no user is found.
    */
-  public async findUsuarioById(id: number) {
-    const result = await this.usuarioRepository.findOne({ where: { id: id } })
+  public async findUsuarioById(id: string) {
+    const result = await this.usuarioRepository.findOne({
+      select: { contrasena: false, rol: { id: false } },
+      relations: ['rol'],
+      where: { id: id }
+    })
     if (!result) {
       throw new NotFoundException('No se encontró el usuario')
     }
@@ -94,7 +102,7 @@ export class UsuarioService {
    * @throws {NotFoundException} - If the user with the specified ID is not found.
    * @throws {BadRequestException} - If the user update fails.
    */
-  public async updateUsuario(id: number, updateUsuarioDto: UpdateUsuarioDto) {
+  public async updateUsuario(id: string, updateUsuarioDto: UpdateUsuarioDto) {
     const usuario = await this.usuarioRepository.findOne({ where: { id } })
     if (!usuario) {
       throw new NotFoundException(`No se encontró el usuario con ID ${id}`)
@@ -128,7 +136,7 @@ export class UsuarioService {
    * @throws {NotFoundException} - If the user with the specified ID is not found.
    * @throws {BadRequestException} - If the user deletion fails.
    */
-  public async deleteUsuario(id: number) {
+  public async deleteUsuario(id: string) {
     const result = await this.usuarioRepository.delete(id)
     if (!result || result.affected === 0) {
       throw new BadRequestException('No se pudo eliminar el usuario')

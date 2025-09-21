@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import { toast } from 'react-toastify'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 const TIMEOUT = 15000
@@ -25,18 +26,20 @@ axiosInstance.interceptors.response.use(
   error => {
     // capturar errores de autenticacion (401) para posible manejo global
     if (error.response && error.response.status === 401) {
-      console.log('Error de autenticacion: ', error)
-
-      //TODO: redirigir al login
+      localStorage.removeItem('token')
+      setAuthToken(null)
+      toast.error('Sesión expirada')
+      setTimeout(() => {
+        window.location.href = '/'
+      }, 2000)
+      return new Promise(() => {})
     }
-
     //capturar errores de red
     if (!error.response) {
       console.error('Error de red: ', error)
 
       //TODO: Mostrar snackbar de red
     }
-
     return Promise.reject(error)
   }
 )

@@ -31,12 +31,12 @@ import { ImgurModule } from './imgur/imgur.module'
         synchronize: false,
         //logging: ['query', 'error'],
         logging: ['error'],
-        extra: {
+        /*extra: {
           ssl: {
             require: configService.get('DB_SSL'),
             rejectUnauthorized: false
           }
-        },
+        },*/
         options: {
           enableArithAbort: true,
           trustServerCertificate: true,

@@ -1,6 +1,6 @@
 import { ProductoCategoria } from './ProductoCategoria'
 export interface Producto {
-  id: number
+  id: string
   nombre: string
   precio: number
   categoria: ProductoCategoria
@@ -14,7 +14,7 @@ export interface FindAllProductsResponse {
 
 export interface FindProductsOptions {
   search?: string
-  categoria?: number
+  categoria?: string
   page?: number
   limit?: number
 }
@@ -22,7 +22,7 @@ export interface FindProductsOptions {
 export interface CreateProducto {
   nombre: string
   precio: number
-  categoria: number
+  categoria: string
   imagen?: File
 }
 

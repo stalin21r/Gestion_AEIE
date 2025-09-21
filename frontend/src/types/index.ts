@@ -11,6 +11,11 @@ import type {
   CreateProductoCategoria,
   UpdateProductoCategoria
 } from './ProductoCategoria'
+import type {
+  Ocupancia,
+  CrearBloqueYCasilleros,
+  CrearBloqueYCasillerosArray
+} from './Casillero'
 
 export {
   ApiResponse,
@@ -21,5 +26,8 @@ export {
   CreateProductoCategoria,
   UpdateProductoCategoria,
   FindAllProductsResponse,
-  FindProductsOptions
+  FindProductsOptions,
+  Ocupancia,
+  CrearBloqueYCasilleros,
+  CrearBloqueYCasillerosArray
 }

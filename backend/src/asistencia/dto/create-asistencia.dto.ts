@@ -1,15 +1,9 @@
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsDateString,
-  IsString,
-  Matches
-} from 'class-validator'
+import { IsNotEmpty, IsDateString, IsString, Matches } from 'class-validator'
 
 export class CreateAsistenciaDto {
   @IsNotEmpty({ message: 'El usuario es requerido' })
-  @IsNumber({}, { message: 'El usuario debe ser un número' })
-  usuario: number
+  @IsString({ message: 'El usuario debe ser un texto' })
+  usuarioId: string
 
   @IsNotEmpty({ message: 'El dia es requerido' })
   @IsDateString({}, { message: 'El dia debe ser una fecha' })

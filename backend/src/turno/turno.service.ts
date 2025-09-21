@@ -30,10 +30,10 @@ export class TurnoService {
    */
   public async createTurno(createTurnoDto: CreateTurnoDto) {
     const turno = this.turnoRepository.create({
-      usuario: { id: createTurnoDto.usuario },
+      usuario: { id: createTurnoDto.usuarioId },
       dia: createTurnoDto.dia,
-      hora_inicio: createTurnoDto.hora_inicio,
-      hora_fin: createTurnoDto.hora_fin
+      horaInicio: createTurnoDto.hora_inicio,
+      horaFin: createTurnoDto.hora_fin
     })
     if (!turno) {
       throw new BadRequestException('Error al registrar turno')
@@ -117,10 +117,10 @@ export class TurnoService {
     const result = await this.turnoRepository.update(
       { id },
       {
-        usuario: { id: updateTurnoDto.usuario },
+        usuario: { id: updateTurnoDto.usuarioId },
         dia: updateTurnoDto.dia,
-        hora_inicio: updateTurnoDto.hora_inicio,
-        hora_fin: updateTurnoDto.hora_fin
+        horaInicio: updateTurnoDto.hora_inicio,
+        horaFin: updateTurnoDto.hora_fin
       }
     )
     if (!result.affected) {

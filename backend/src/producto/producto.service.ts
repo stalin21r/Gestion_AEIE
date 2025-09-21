@@ -47,11 +47,11 @@ export class ProductoService {
       }
 
       const producto = this.productoRepository.create({
+        categoria: { id: createProductoDto.categoriaId },
         nombre: createProductoDto.nombre,
         precio: createProductoDto.precio,
-        categoria: { id: createProductoDto.categoria },
         imagen: imageUrl,
-        delete_hash: delete_hash
+        deleteHash: delete_hash
       })
       if (!producto) {
         throw new BadRequestException('No se pudo crear el producto')
@@ -82,10 +82,20 @@ export class ProductoService {
     }
 
     if (categoria) {
-      where.categoria = { id: Number(categoria) }
+      where.categoria = { id: categoria }
     }
 
     const [products, total] = await this.productoRepository.findAndCount({
+      select: {
+        id: true,
+        nombre: true,
+        precio: true,
+        imagen: true,
+        categoria: {
+          id: true,
+          categoria: true
+        }
+      },
       where,
       relations: ['categoria'],
       order: { id: 'ASC' },
@@ -96,7 +106,7 @@ export class ProductoService {
     return { products, total }
   }
 
-  public async findProductoById(id: number) {
+  public async findProductoById(id: string) {
     const result = await this.productoRepository.findOneBy({ id })
     if (!result) {
       throw new NotFoundException('No se encontró el producto')
@@ -105,7 +115,7 @@ export class ProductoService {
   }
 
   public async updateProducto(
-    id: number,
+    id: string,
     updateProductoDto: UpdateProductoDto,
     imagen?: Express.Multer.File
   ) {
@@ -123,9 +133,9 @@ export class ProductoService {
         )
         imageUrl = uploadResult.link
         delete_hash = uploadResult.deletehash
-        if (producto.delete_hash) {
+        if (producto.deleteHash) {
           try {
-            await this.imgurService.deleteImage(producto.delete_hash)
+            await this.imgurService.deleteImage(producto.deleteHash)
           } catch (error) {
             console.error('Error al borrar la imagen anterior:', error)
           }
@@ -147,12 +157,12 @@ export class ProductoService {
     return productoActualizado
   }
 
-  public async deleteProducto(id: number) {
+  public async deleteProducto(id: string) {
     const producto = await this.productoRepository.findOneBy({ id })
     if (!producto) {
       throw new NotFoundException('No se encontró el producto')
     }
-    const deleteHash = producto.delete_hash
+    const deleteHash = producto.deleteHash
     const result = await this.productoRepository.delete(id)
     if (!result.affected) {
       throw new NotFoundException('No se pudo eliminar el producto')

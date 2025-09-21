@@ -20,7 +20,15 @@ import { UpdateProductoCategoriaDto } from './dto/update-producto-categoria.dto'
 import { Response } from 'express'
 import { RolesGuard } from '../auth/guards/roles.guard'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiBody
+} from '@nestjs/swagger'
 
+@ApiTags('producto-categoria')
 @Controller('producto-categoria')
 @UsePipes(new ValidationPipe({ transform: true }))
 export class ProductoCategoriaController {
@@ -29,6 +37,10 @@ export class ProductoCategoriaController {
   ) {}
 
   @Post()
+  @ApiOperation({ summary: 'Crear una nueva categoría de producto' })
+  @ApiBody({ type: CreateProductoCategoriaDto })
+  @ApiResponse({ status: 201, description: 'Categoría creada correctamente.' })
+  @ApiResponse({ status: 400, description: 'Datos inválidos.' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   async createCategoria(
     @Res() res: Response,
@@ -56,6 +68,12 @@ export class ProductoCategoriaController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Obtener todas las categorías de producto' })
+  @ApiResponse({
+    status: 200,
+    description: 'Categorias obtenidas correctamente.'
+  })
+  @ApiResponse({ status: 404, description: 'No se encontraron categorías.' })
   async findAllCategorias(@Res() res: Response) {
     try {
       const result = await this.productoCategoriaService.findAllCategorias()
@@ -77,7 +95,14 @@ export class ProductoCategoriaController {
   }
 
   @Get(':id')
-  async findCategoriaById(@Res() res: Response, @Param('id') id: number) {
+  @ApiOperation({ summary: 'Obtener una categoría de producto por ID' })
+  @ApiParam({ name: 'id', type: String })
+  @ApiResponse({
+    status: 200,
+    description: 'Categoría obtenida correctamente.'
+  })
+  @ApiResponse({ status: 404, description: 'Categoría no encontrada.' })
+  async findCategoriaById(@Res() res: Response, @Param('id') id: string) {
     try {
       const result = await this.productoCategoriaService.findCategoriaById(id)
       return res.status(HttpStatus.OK).json({
@@ -98,10 +123,18 @@ export class ProductoCategoriaController {
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Actualizar una categoría de producto' })
+  @ApiParam({ name: 'id', type: String })
+  @ApiBody({ type: UpdateProductoCategoriaDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Categoría actualizada correctamente.'
+  })
+  @ApiResponse({ status: 404, description: 'Categoría no encontrada.' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   async updateCategoria(
     @Res() res: Response,
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() updateProductoCategoriaDto: UpdateProductoCategoriaDto
   ) {
     try {
@@ -127,8 +160,15 @@ export class ProductoCategoriaController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Eliminar una categoría de producto' })
+  @ApiParam({ name: 'id', type: String })
+  @ApiResponse({
+    status: 200,
+    description: 'Categoría eliminada correctamente.'
+  })
+  @ApiResponse({ status: 404, description: 'Categoría no encontrada.' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async deleteCategoria(@Res() res: Response, @Param('id') id: number) {
+  async deleteCategoria(@Res() res: Response, @Param('id') id: string) {
     try {
       const result = await this.productoCategoriaService.deleteCategoria(id)
       return res.status(HttpStatus.OK).json({

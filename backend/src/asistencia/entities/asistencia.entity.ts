@@ -1,29 +1,29 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
+  Entity,
+  Index,
+  JoinColumn,
   ManyToOne,
-  JoinColumn
+  PrimaryGeneratedColumn
 } from 'typeorm'
 import { Usuario } from '../../usuario/entities/usuario.entity'
 
+@Index('asistencia_pkey', ['id'], { unique: true })
 @Entity('asistencia', { schema: 'private' })
 export class Asistencia {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number
 
-  @ManyToOne(() => Usuario, (usuario) => usuario.asistencias, {
-    onDelete: 'CASCADE'
-  })
-  @JoinColumn({ name: 'usuario' })
-  usuario: Usuario
-
-  @Column({ type: 'date' })
+  @Column('date', { name: 'dia' })
   dia: string
 
-  @Column({ type: 'time' })
-  hora_llegada: string
+  @Column('time without time zone', { name: 'hora_llegada', nullable: true })
+  horaLlegada: string | null
 
-  @Column({ type: 'time' })
-  hora_salida: string
+  @Column('time without time zone', { name: 'hora_salida', nullable: true })
+  horaSalida: string | null
+
+  @ManyToOne(() => Usuario, (usuario) => usuario.asistencias)
+  @JoinColumn([{ name: 'usuario', referencedColumnName: 'id' }])
+  usuario: Usuario
 }

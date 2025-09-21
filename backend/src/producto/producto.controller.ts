@@ -25,7 +25,16 @@ import { Response } from 'express'
 import { ImageValidationPipe } from './pipes/image-validation.pipe'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { FindProductsDto } from './dto/find-products.dto'
+import {
+  ApiTags,
+  ApiConsumes,
+  ApiOperation,
+  ApiResponse,
+  ApiBody,
+  ApiParam
+} from '@nestjs/swagger'
 
+@ApiTags('Productos')
 @Controller('producto')
 @UsePipes(new ValidationPipe({ transform: true }))
 export class ProductoController {
@@ -34,6 +43,16 @@ export class ProductoController {
   @Post()
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('imagen'))
+  @ApiOperation({ summary: 'Crear un nuevo producto' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Datos para crear producto con imagen opcional',
+    type: CreateProductoDto
+  })
+  @ApiResponse({ status: 201, description: 'Producto creado correctamente' })
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
+  @ApiResponse({ status: 401, description: 'No autorizado (falta token JWT)' })
+  @ApiResponse({ status: 500, description: 'Error interno al crear producto' })
   async createProducto(
     @Res() res: Response,
     @Body() createProductoDto: CreateProductoDto,
@@ -62,6 +81,16 @@ export class ProductoController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Listar productos con filtros y paginación' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de productos obtenida correctamente'
+  })
+  @ApiResponse({ status: 404, description: 'No se encontraron productos' })
+  @ApiResponse({
+    status: 500,
+    description: 'Error interno al obtener productos'
+  })
   async findAllProductos(
     @Query() query: FindProductsDto,
     @Res() res: Response
@@ -86,9 +115,17 @@ export class ProductoController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Obtener producto por ID' })
+  @ApiParam({ name: 'id', description: 'UUID del producto' })
+  @ApiResponse({ status: 200, description: 'Producto obtenido correctamente' })
+  @ApiResponse({ status: 404, description: 'Producto no encontrado' })
+  @ApiResponse({
+    status: 500,
+    description: 'Error interno al obtener producto'
+  })
   async findProductoById(@Res() res: Response, @Param('id') id: string) {
     try {
-      const result = await this.productoService.findProductoById(+id)
+      const result = await this.productoService.findProductoById(id)
       return res.status(HttpStatus.OK).json({
         message: 'Producto obtenido correctamente',
         data: result
@@ -109,6 +146,24 @@ export class ProductoController {
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('imagen'))
+  @ApiOperation({ summary: 'Actualizar un producto existente' })
+  @ApiConsumes('multipart/form-data')
+  @ApiParam({ name: 'id', description: 'UUID del producto' })
+  @ApiBody({
+    description: 'Datos para actualizar producto (imagen opcional)',
+    type: UpdateProductoDto
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Producto actualizado correctamente'
+  })
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
+  @ApiResponse({ status: 401, description: 'No autorizado (falta token JWT)' })
+  @ApiResponse({ status: 404, description: 'Producto no encontrado' })
+  @ApiResponse({
+    status: 500,
+    description: 'Error interno al actualizar producto'
+  })
   async updateProducto(
     @Res() res: Response,
     @Param('id') id: string,
@@ -117,7 +172,7 @@ export class ProductoController {
   ) {
     try {
       const result = await this.productoService.updateProducto(
-        +id,
+        id,
         updateProductoDto,
         imagen
       )
@@ -145,9 +200,18 @@ export class ProductoController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Eliminar producto por ID' })
+  @ApiParam({ name: 'id', description: 'UUID del producto' })
+  @ApiResponse({ status: 200, description: 'Producto eliminado correctamente' })
+  @ApiResponse({ status: 401, description: 'No autorizado (falta token JWT)' })
+  @ApiResponse({ status: 404, description: 'Producto no encontrado' })
+  @ApiResponse({
+    status: 500,
+    description: 'Error interno al eliminar producto'
+  })
   async deleteProducto(@Res() res: Response, @Param('id') id: string) {
     try {
-      const result = await this.productoService.deleteProducto(+id)
+      const result = await this.productoService.deleteProducto(id)
       return res.status(HttpStatus.OK).json({
         message: 'Producto eliminado correctamente',
         data: result

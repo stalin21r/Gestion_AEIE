@@ -19,18 +19,24 @@ export class AsistenciaService {
 
   public async createAsistencia(
     createAsistenciaDto: CreateAsistenciaDto,
-    userId: number
+    userId: string
   ) {
-    if (userId !== createAsistenciaDto.usuario) {
+    if (userId !== createAsistenciaDto.usuarioId) {
       throw new ForbiddenException(
         'No tienes permisos para registrar asistencia'
       )
     }
+    const user = await this.asistenciaRepository.findOne({
+      where: { usuario: { id: createAsistenciaDto.usuarioId } }
+    })
+    if (!user) {
+      throw new NotFoundException('No se encontró el usuario')
+    }
     const asistencia = this.asistenciaRepository.create({
-      usuario: { id: createAsistenciaDto.usuario },
+      usuario: { id: createAsistenciaDto.usuarioId },
       dia: createAsistenciaDto.dia,
-      hora_llegada: createAsistenciaDto.hora_llegada,
-      hora_salida: createAsistenciaDto.hora_salida
+      horaLlegada: createAsistenciaDto.hora_llegada,
+      horaSalida: createAsistenciaDto.hora_salida
     })
     if (!asistencia) {
       throw new BadRequestException('Error al registrar asistencia')
@@ -90,10 +96,10 @@ export class AsistenciaService {
     const result = await this.asistenciaRepository.update(
       { id },
       {
-        usuario: { id: updateAsistenciaDto.usuario },
+        usuario: { id: updateAsistenciaDto.usuarioId },
         dia: updateAsistenciaDto.dia,
-        hora_llegada: updateAsistenciaDto.hora_llegada,
-        hora_salida: updateAsistenciaDto.hora_salida
+        horaLlegada: updateAsistenciaDto.hora_llegada,
+        horaSalida: updateAsistenciaDto.hora_salida
       }
     )
     if (!result.affected) {
